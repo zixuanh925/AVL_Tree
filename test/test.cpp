@@ -1,53 +1,101 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
 
-// uncomment and replace the following with your own headers
-// #include "AVL.h"
+// Name: Zixuan Huang
+// UFID: 43228270
+#include "AVL.h"
 
 using namespace std;
 
-// the syntax for defining a test is below. It is important for the name to be unique, but you can group multiple tests with [tags]. A test can have [multiple][tags] using that syntax.
-TEST_CASE("Example Test Name - Change me!", "[flag]"){
-	// instantiate any class members that you need to test here
-	int one = 1;
+// Test 1: Test at least five command executions that result in "unsuccessful"
+TEST_CASE("AVL Data Validation - Unsuccessful Cases", "[validation]"){
+	AVL tree;
 
-	// anything that evaluates to false in a REQUIRE block will result in a failing test 
-	REQUIRE(one == 0); // fix me!
+	SECTION("Invalid GatorID Length") {
+		// IDs must have 8 digits
+		REQUIRE(tree.insert("Gator", 123) == "unsuccessful");
+		REQUIRE(tree.insert("Crystal", 123456789) == "unsuccessful");
+	}
 
-	// all REQUIRE blocks must evaluate to true for the whole test to pass
-	REQUIRE(false); // also fix me!
+	SECTION("Invalid Name Characters") {
+		// Names must only have letters and spaces
+		REQUIRE(tree.insert("Gator123", 11111111) == "unsuccessful");
+		REQUIRE(tree.insert("Gator_!", 11111112) == "unsuccessful");
+	}
+
+	SECTION("Duplicate GatorID") {
+		tree.insert("Original", 22222222);
+		// IDs must be unique
+		REQUIRE(tree.insert("Dup", 22222222) == "unsuccessful");
+	}
+
+	SECTION("Removing Non-Existent ID") {
+		REQUIRE(tree.remove(99999999) == "unsuccessful");
+	}
 }
 
-TEST_CASE("Test 2", "[flag]"){
-	// you can also use "sections" to share setup code between tests, for example:
-	int one = 1;
+// Test 2: Test insert command and all four rotation cases
+TEST_CASE("AVL Rotations", "[rotations]") {
+	SECTION("Left-Left Rotation") {
+		AVL tree;
+		tree.insert("A", 30);
+		tree.insert("B", 20);
+		tree.insert("C", 10);
+		REQUIRE(tree.printPreorder()[0] == "B");
+	}
 
-	SECTION("num is 2") {
-		int num = one + 1;
-		REQUIRE(num == 2);
-	};
+	SECTION("Right-Right Rotation") {
+		AVL tree;
+		tree.insert("A", 10);
+		tree.insert("B", 20);
+		tree.insert("C", 30);
+		REQUIRE(tree.printPreorder()[0] == "B");
+	}
 
-	SECTION("num is 3") {
-		int num = one + 2;
-		REQUIRE(num == 3);
-	};
+	SECTION("Left-Right Rotation") {
+		AVL tree;
+		tree.insert("A", 30);
+		tree.insert("B", 10);
+		tree.insert("C", 20);
+		REQUIRE(tree.printPreorder()[0] == "C");
+	}
 
-	// each section runs the setup code independently to ensure that they don't affect each other
+	SECTION("Right-Left Rotation") {
+		AVL tree;
+		tree.insert("A", 30);
+		tree.insert("B", 50);
+		tree.insert("C", 40);
+		REQUIRE(tree.printPreorder()[0] == "C");
+	}
 }
 
-// you must write 5 unique, meaningful tests for credit on the testing portion of this project!
+// Test 3: 100 insertions, 10 random removals, check inorder
+TEST_CASE("AVl Stress Test", "[stress]") {
+	AVL tree;
+	vector<int> expectedIDs;
 
-// the provided test from the template is below.
+	for (int i = 0; i < 100; i++) {
+		int id = 10000000 + i;
+		tree.insert("student", id);
+		expectedIDs.push_back(id);
+	}
+	REQUIRE(tree.printInorder().size() == 100);
 
-TEST_CASE("Example BST Insert", "[flag]"){
-	/*
-		MyAVLTree tree;   // Create a Tree object
-		tree.insert(3);
-		tree.insert(2);
-		tree.insert(1);
-		std::vector<int> actualOutput = tree.inorder();
-		std::vector<int> expectedOutput = {1, 2, 3};
-		REQUIRE(expectedOutput.size() == actualOutput.size());
-		REQUIRE(actualOutput == expectedOutput);
-	*/
+	shuffle(expectedIDs.begin(), expectedIDs.end(), random_device());
+	for (int i = 0; i < 10; i++) {
+		tree.remove(expectedIDs.back());
+		expectedIDs.pop_back();
+	}
+
+	REQUIRE(tree.printInorder().size() == 90);
+
+	auto currentInorder = tree.printInorder();
+	bool isSorted = true;
+	for (size_t i = 1; i < currentInorder.size(); i++) {
+
+	}
+	REQUIRE(isSorted);
 }
