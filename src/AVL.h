@@ -18,6 +18,7 @@ struct Node {
 
 class AVL {
     Node* root = nullptr;
+    bool lastOpSuccess;
 
     //helper functions
     static int getHeight(const Node* node);
@@ -40,11 +41,12 @@ class AVL {
     void getInorderNodes(Node* node, vector<Node*>& nodes);
 
 public:
-    AVL() : root(nullptr) {}
+    AVL() : root(nullptr), lastOpSuccess(false) {}
+    bool wasLastOpSuccessful() const { return lastOpSuccess; }
 
     //insert functions
-    void insert(string name, int id);
-    void remove(int id);
+    Node* insert(string name, int id);
+    Node* remove(int id);
 
     //traversal functions
     void printInorder();
@@ -58,4 +60,8 @@ public:
     //level and Nth removal
     void printLevelCount();
     void removeInorder(int n);
+
+    //getter functions
+    vector<string> getInorder();
+    vector<string> getPreorder();
 };

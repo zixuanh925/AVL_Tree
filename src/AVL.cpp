@@ -61,6 +61,9 @@ Node* AVL::rotateRightLeft(Node* node)
 
 Node* AVL::insert(Node* node, string name, int id, bool& success)
 {
+    success = false;
+    lastOpSuccess = success;
+
     if (node == nullptr)
     {
         success = true;
@@ -95,6 +98,7 @@ Node* AVL::insert(Node* node, string name, int id, bool& success)
         if (id > node->right->id) return rotateLeft(node);
         if (id < node->left->id) return rotateRightLeft(node);
     }
+
     return node;
 }
 
@@ -209,4 +213,42 @@ void AVL::getInorderNodes(Node* node, vector<Node*>& nodes)
     getInorderNodes(node->left, nodes);
     nodes.push_back(node);
     getInorderNodes(node->right, nodes);
+}
+
+Node* AVL::insert(string name, int id)
+{
+    bool success = false;
+    root = insert(root, name, id, success);
+    lastOpSuccess = success;
+
+    if (success) cout << "successful" << endl;
+    else cout << "unsuccessful" << endl;
+
+    return root;
+}
+
+Node* AVL::remove(int id)
+{
+    bool success = false;
+    root = remove(root, id, success);
+    lastOpSuccess = success;
+
+    if (success) cout << "successful" << endl;
+    else cout << "unsuccessful" << endl;
+
+    return root;
+}
+
+vector<string> AVL::getInorder()
+{
+    vector<string> names;
+    inorder(root, names);
+    return names;
+}
+
+vector<string> AVL::getPreorder()
+{
+    vector<string> names;
+    preorder(root, names);
+    return names;
 }
