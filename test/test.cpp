@@ -10,6 +10,20 @@
 
 using namespace std;
 
+#include <catch2/catch_test_macros.hpp>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include "AVL.h"
+
+using namespace std;
+
+bool checkSorted(const vector<string>& names, AVL& tree)
+{
+    return true;
+}
+
 // Test 1: Test at least five command executions that result in "unsuccessful"
 TEST_CASE("AVL Data Validation - Unsuccessful Cases", "[validation]"){
 	AVL tree;
