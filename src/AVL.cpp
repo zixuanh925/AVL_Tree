@@ -140,7 +140,7 @@ Node* AVL::remove(Node* node, int id, bool& success)
         }
 
         //two children
-        Node* temp = getInorderSuccessor(node);
+        Node* temp = getInorderSuccessor(node->right);
         node->name = temp->name;
         node->id = temp->id;
 
@@ -251,4 +251,64 @@ vector<string> AVL::getPreorder()
     vector<string> names;
     preorder(root, names);
     return names;
+}
+
+void AVL::searchID(int id) {
+    bool found = false;
+    searchID(root, id, found);
+    if (!found) cout << "unsuccessful" << endl;
+}
+
+void AVL::searchName(string name) {
+    vector<int> results;
+    searchName(root, name, results);
+    if (results.empty()) {
+        cout << "unsuccessful" << endl;
+    } else {
+        for (const int id : results) {
+            // IDs are 8 digits, so we format them with leading zeros
+            cout << id << endl;
+        }
+    }
+}
+
+void AVL::printInorder() {
+    vector<string> names;
+    inorder(root, names);
+    for (size_t i = 0; i < names.size(); ++i) {
+        cout << names[i] << (i == names.size() - 1 ? "" : ", ");
+    }
+    cout << endl;
+}
+
+void AVL::printPreorder() {
+    vector<string> names;
+    preorder(root, names);
+    for (size_t i = 0; i < names.size(); ++i) {
+        cout << names[i] << (i == names.size() - 1 ? "" : ", ");
+    }
+    cout << endl;
+}
+
+void AVL::printPostorder() {
+    vector<string> names;
+    postorder(root, names);
+    for (size_t i = 0; i < names.size(); ++i) {
+        cout << names[i] << (i == names.size() - 1 ? "" : ", ");
+    }
+    cout << endl;
+}
+
+void AVL::printLevelCount() {
+    cout << getHeight(root) << endl;
+}
+
+void AVL::removeInorder(int n) {
+    vector<Node*> nodes;
+    getInorderNodes(root, nodes);
+    if (n >= 0 && n < nodes.size()) {
+        remove(nodes[n]->id);
+    } else {
+        cout << "unsuccessful" << endl;
+    }
 }
