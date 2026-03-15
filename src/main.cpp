@@ -4,8 +4,41 @@
 #include <vector>
 using namespace std;
 
+
+#include <regex>
 #include "AVL.h"
 
+bool isValidName(std::string name) {
+    return std::regex_match(name, std::regex("^[a-zA-Z ]+$"));
+}
+
+bool isValidID(std::string id) {
+    return id.length() == 8 && std::regex_match(id, std::regex("^[0-9]+$"));
+}
+
+int main() {
+    AVLTree tree;
+    int numCommands;
+    std::cin >> numCommands;
+    std::string line;
+    std::getline(std::cin, line);
+
+    while (numCommands--) {
+        std::getline(std::cin, line);
+        if (line.find("insert ") == 0) {
+            std::regex reg("insert \"([^\"]+)\" ([0-9]+)");
+            std::smatch m;
+            if (std::regex_search(line, m, reg) && isValidName(m[1]) && isValidID(m[2]))
+                tree.insert(m[1], m[2]);
+            else std::cout << "unsuccessful" << std::endl;
+        }
+        else if (line.find("printInorder") == 0) tree.printInorder();
+        else if (line.find("printLevelCount") == 0) tree.printLevelCount();
+        // ... add other command parsers
+    }
+    return 0;
+}
+/*
 //helper to validate Name: only alphabets and spaces
 bool isValidName(string name)
 {
@@ -152,3 +185,4 @@ int main()
 
     return 0;
 }
+*/
