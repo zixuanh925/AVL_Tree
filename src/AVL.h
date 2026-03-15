@@ -5,50 +5,7 @@
 #include <vector>
 using namespace std;
 
-struct Node {
-    std::string name;
-    std::string ufid;
-    Node *left, *right;
-    int height;
 
-    Node(std::string n, std::string id)
-        : name(n), ufid(id), left(nullptr), right(nullptr), height(1) {}
-};
-
-class AVLTree {
-private:
-    Node* root;
-
-    // Helper functions for balancing
-    int getHeight(Node* node);
-    int getBalance(Node* node);
-    Node* rotateRight(Node* y);
-    Node* rotateLeft(Node* x);
-
-    // Recursive helpers
-    Node* insert(Node* node, std::string name, std::string id, bool& success);
-    Node* remove(Node* node, std::string id, bool& success);
-    Node* getInorderSuccessor(Node* node);
-
-    void getInorder(Node* node, std::vector<Node*>& nodes);
-    void getPreorder(Node* node, std::vector<std::string>& names);
-    void getPostorder(Node* node, std::vector<std::string>& names);
-    void searchName(Node* node, std::string name, std::vector<std::string>& ids);
-
-public:
-    AVLTree() : root(nullptr) {}
-    void insert(std::string name, std::string id);
-    void remove(std::string id);
-    void searchID(std::string id);
-    void searchName(std::string name);
-    void printInorder();
-    void printPreorder();
-    void printPostorder();
-    void printLevelCount();
-    void removeInorder(int n);
-};
-
-/*
 struct Node {
     string name;
     int id;
@@ -108,4 +65,3 @@ public:
     vector<string> getInorder();
     vector<string> getPreorder();
 };
-*/
