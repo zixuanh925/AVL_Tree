@@ -1,11 +1,11 @@
-#include "AVL.h"
-
 #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <iomanip>
 using namespace std;
 
+#include "AVL.h"
 
 int AVL::getHeight(const Node* node)
 {
@@ -88,15 +88,17 @@ Node* AVL::insert(Node* node, string name, int id, bool& success)
     //left heavy
     if (balance > 1)
     {
-        if (id < node->left->id) return rotateRight(node);
-        if (id > node->right->id) return rotateLeftRight(node);
+        if (id < node->left->id)
+            return rotateRight(node);
+        return rotateLeftRight(node);
     }
 
     //right heavy
     if (balance < -1)
     {
-        if (id > node->right->id) return rotateLeft(node);
-        if (id < node->left->id) return rotateRightLeft(node);
+        if (id > node->right->id)
+            return rotateLeft(node);
+        return rotateRightLeft(node);
     }
 
     return node;
@@ -266,8 +268,8 @@ void AVL::searchName(string name) {
         cout << "unsuccessful" << endl;
     } else {
         for (const int id : results) {
-            // IDs are 8 digits, so we format them with leading zeros
-            cout << id << endl;
+            // IDs are 8 digits, format them with leading zeros
+            cout << setfill('0') << setw(8) << id << endl;
         }
     }
 }

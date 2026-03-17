@@ -65,7 +65,11 @@ int main()
             if (firstQuote != string::npos && lastQuote != string::npos)
             {
                 string name = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
-                string idStr = line.substr(lastQuote + 1);
+
+                string idPart = line.substr(lastQuote + 1);
+                stringstream tempStream(idPart);
+                string idStr;
+                tempStream >> idStr;
 
                 if (isValidName(name) && isValidID(idStr))
                 {
